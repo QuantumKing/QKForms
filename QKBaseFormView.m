@@ -222,13 +222,18 @@
         else {
             UIView *firstField = [weakSelf.fields firstObject];
             CGFloat y = CGRectGetMinY([firstField convertRect:firstField.bounds toView:weakSelf]);
-
-            if (y < offset.y) {
+            
+            if (weakSelf.contentSize.height < CGRectGetHeight(weakSelf.bounds) && offset.y > 0) {
+                offset.y += MAX(dy, -offset.y);
+                weakSelf.contentOffsetDiff = [NSValue valueWithCGPoint:CGPointZero];
+                [weakSelf slideToOffset:offset animated:animated userInfo:info];
+            }
+            else if (y < offset.y) {
                 offset.y += dy;
                 weakSelf.contentOffsetDiff = [NSValue valueWithCGPoint:CGPointZero];
                 [weakSelf slideToOffset:offset animated:animated userInfo:info];
             }
-            else if (offset.y < -dy) {
+            else if (offset.y + dy < 0) {
                 offset.y = 0;
                 weakSelf.contentOffsetDiff = [NSValue valueWithCGPoint:CGPointZero];
                 [weakSelf slideToOffset:offset animated:animated userInfo:info];
@@ -337,7 +342,13 @@
 {
     NSUInteger idx = [self.fields indexOfObject:self.currentField];
     if (++idx < [self.fields count]) {
-        [self.fields[idx] becomeFirstResponder];
+        UIView *field = self.fields[idx];
+        if ([field canBecomeFirstResponder]) {
+            [self.fields[idx] becomeFirstResponder];
+        }
+        else {
+            [self nextField];
+        }
     }
     else {
         // At the last field. Submit!
@@ -352,7 +363,13 @@
 {
     NSUInteger idx = [self.fields indexOfObject:self.currentField];
     if (--idx > 0) {
-        [self.fields[idx] becomeFirstResponder];
+        UIView *field = self.fields[idx];
+        if ([field canBecomeFirstResponder]) {
+            [self.fields[idx] becomeFirstResponder];
+        }
+        else {
+            [self previousField];
+        }
     }
 }
 
