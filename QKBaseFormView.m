@@ -112,13 +112,14 @@
 {
     if (animated) {
         UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
+        UIViewAnimationCurve animationCurve;
         
         if (self.animationOptions) {
             options |= self.animationOptions;
         }
         else {
             NSNumber *curveValue = userInfo[UIKeyboardAnimationCurveUserInfoKey];
-            UIViewAnimationCurve animationCurve = curveValue.intValue;
+            animationCurve = curveValue.intValue;
             options |= (animationCurve << 16);
         }
         
@@ -127,7 +128,7 @@
             NSNumber *number = userInfo[UIKeyboardAnimationDurationUserInfoKey];
             duration = [number doubleValue];
         }
-        
+                
         [UIView animateWithDuration:duration delay:self.animationDelay options:options animations:^{
             [super setContentOffset:offset];
         } completion:nil];
@@ -198,6 +199,7 @@
         NSValue *rectValue = info[UIKeyboardFrameEndUserInfoKey];
         CGRect keyboardFrame = [weakSelf convertRect:[rectValue CGRectValue] fromView:nil];
         CGRect fieldFrame;
+        
         if ([field isKindOfClass:[UITextView class]]) {
         // If field is a text view, then slide to the caret frame.
             UITextPosition *pos = [(UITextView *)field selectedTextRange].start;
@@ -207,8 +209,8 @@
             fieldFrame = field.bounds;
         }
         fieldFrame = [field convertRect:fieldFrame toView:weakSelf];
-        CGFloat defaultMargin = UIDeviceOrientationIsPortrait([UIDevice currentDevice].orientation) ? 44 : 11;
         
+        CGFloat defaultMargin = UIDeviceOrientationIsPortrait([UIDevice currentDevice].orientation) ? 44 : 11;
         CGPoint offset = weakSelf.contentOffset;
         CGFloat dy = floorf(CGRectGetMaxY(fieldFrame) - CGRectGetMinY(keyboardFrame) + weakSelf.keyboardTopMargin + defaultMargin);
         
@@ -220,6 +222,7 @@
         else {
             UIView *firstField = [weakSelf.fields firstObject];
             CGFloat y = CGRectGetMinY([firstField convertRect:firstField.bounds toView:weakSelf]);
+
             if (y < offset.y) {
                 offset.y += dy;
                 weakSelf.contentOffsetDiff = [NSValue valueWithCGPoint:CGPointZero];
