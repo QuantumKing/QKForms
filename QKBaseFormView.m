@@ -7,6 +7,7 @@
 
 #import "QKBaseFormView.h"
 #import "QKKeyboardStateListener.h"
+#import "QKAutoExpandingTextView.h"
 
 @interface UIView (QKForms)
 
@@ -26,8 +27,13 @@
 - (void)_findFormFields:(NSMutableArray *)results
 {
     for (UIView *s in self.subviews) {
-        if ([s isKindOfClass:[UITextField class]] || [s isKindOfClass:[UITextView class]]) {
+        if ([s isKindOfClass:[UITextField class]]) {
             [results addObject:s];
+        }
+        else if ([s isKindOfClass:[UITextView class]]) {
+            if ([(UITextView *)s isEditable]) {
+                [results addObject:s];
+            }
         }
         [s _findFormFields:results];
     }
@@ -206,7 +212,7 @@
         CGPoint offset = weakSelf.contentOffset;
         CGFloat dy = floorf(CGRectGetMaxY(fieldFrame) - CGRectGetMinY(keyboardFrame) + weakSelf.keyboardTopMargin + defaultMargin);
         
-        if (dy > 0 || self.shouldMoveVisibleFields) {
+        if (dy > 0 || self.shouldFocusFields) {
             offset.y += dy;
             weakSelf.contentOffsetDiff = [NSValue valueWithCGPoint:CGPointMake(0, -dy)];
             [weakSelf slideToOffset:offset animated:animated userInfo:info];
@@ -216,6 +222,11 @@
             CGFloat y = CGRectGetMinY([firstField convertRect:firstField.bounds toView:weakSelf]);
             if (y < offset.y) {
                 offset.y += dy;
+                weakSelf.contentOffsetDiff = [NSValue valueWithCGPoint:CGPointZero];
+                [weakSelf slideToOffset:offset animated:animated userInfo:info];
+            }
+            else if (offset.y < -dy) {
+                offset.y = 0;
                 weakSelf.contentOffsetDiff = [NSValue valueWithCGPoint:CGPointZero];
                 [weakSelf slideToOffset:offset animated:animated userInfo:info];
             }
@@ -239,8 +250,13 @@
 
 - (void)orientationDidChange:(NSNotification *)notification
 {
+    if (![self.currentField isFirstResponder]) {
+        return;
+    }
+    
     QKKeyboardStateListener *listener = [QKKeyboardStateListener sharedInstance];
     if ([listener isVisible] || [listener isAnimating]) {
+        MWLog(@"did change");
         [self slideUpToField:self.currentField];
     }
 }
@@ -252,6 +268,8 @@
         return;
     }
     
+    MWLog(@"did edit");
+
     self.fields = [self formFields];
     if (![self.fields containsObject:firstResponder]) {
         return;
@@ -344,6 +362,8 @@
 {
     QKAutoExpandingTextView *autoExpandingTextView = notification.object;
     if ([autoExpandingTextView isFirstResponder]) {
+        MWLog(@"did change height");
+
         [self slideUpToField:autoExpandingTextView animated:NO];
     }
 }

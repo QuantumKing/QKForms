@@ -5,8 +5,6 @@
 //  Copyright (c) 2014 Eric Webster. All rights reserved.
 //
 
-#import "QKAutoExpandingTextView.h"
-
 @interface QKBaseFormView : UIScrollView<UIGestureRecognizerDelegate,UIScrollViewDelegate>
 
 - (IBAction)previousField;
@@ -23,7 +21,7 @@
 @property (nonatomic, assign) NSTimeInterval animationDuration;
 @property (nonatomic, assign) NSTimeInterval animationDelay;
 
-@property (nonatomic, assign) BOOL shouldMoveVisibleFields;
+@property (nonatomic, assign) BOOL shouldFocusFields;
 @property (nonatomic, assign) BOOL returnShouldMoveToNextField;
 
 @end
