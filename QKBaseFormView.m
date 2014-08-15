@@ -256,7 +256,6 @@
     
     QKKeyboardStateListener *listener = [QKKeyboardStateListener sharedInstance];
     if ([listener isVisible] || [listener isAnimating]) {
-        MWLog(@"did change");
         [self slideUpToField:self.currentField];
     }
 }
@@ -268,8 +267,6 @@
         return;
     }
     
-    MWLog(@"did edit");
-
     self.fields = [self formFields];
     if (![self.fields containsObject:firstResponder]) {
         return;
@@ -362,8 +359,6 @@
 {
     QKAutoExpandingTextView *autoExpandingTextView = notification.object;
     if ([autoExpandingTextView isFirstResponder]) {
-        MWLog(@"did change height");
-
         [self slideUpToField:autoExpandingTextView animated:NO];
     }
 }

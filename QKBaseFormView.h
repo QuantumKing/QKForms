@@ -21,6 +21,7 @@
 @property (nonatomic, assign) NSTimeInterval animationDuration;
 @property (nonatomic, assign) NSTimeInterval animationDelay;
 
+@property (nonatomic, assign) BOOL showsShadow;
 @property (nonatomic, assign) BOOL shouldFocusFields;
 @property (nonatomic, assign) BOOL returnShouldMoveToNextField;
 
