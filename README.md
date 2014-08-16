@@ -54,6 +54,12 @@ There are a few options and functions you may use on your `QKBaseFormView`:
 // if it is already above the keyboard.
 @property (nonatomic, assign) BOOL shouldFocusFields;
 ```
+and a single option on `QKAutoExpandingTextView`:
+
+``` obj-c
+// If maxHeight is a number other than 0, this view will not expand beyond maxHeight.
+@property (nonatomic, assign) CGFloat maxHeight;
+```
 
 ##Installation via Cocoapods
 
