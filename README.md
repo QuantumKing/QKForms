@@ -14,7 +14,7 @@ Here is a step by step guide to using QKForms using interface builder. The demo 
 ![](https://raw.githubusercontent.com/QuantumKing/QKForms/master/QKFormsDemo/screenshots/step2.png)
 
 ###Step 3
-![](https://raw.githubusercontent.com/QuantumKing/QKForms/master/QKFormsDemo/screenshots/step5.png)
+![](https://raw.githubusercontent.com/QuantumKing/QKForms/master/QKFormsDemo/screenshots/step4.png)
 
 ###That's it!
 Everything is handled automatically after you've designed your form. Any text view with the class `QKAutoExpandingTextView` will expand as you type
