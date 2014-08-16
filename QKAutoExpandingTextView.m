@@ -111,9 +111,8 @@ NSString *const QKAutoExpandingTextViewDidChangeHeight = @"qk_aetv_change_height
         else {
             for (NSLayoutConstraint *constraint in self.constraints) {
                 if (constraint.firstAttribute == NSLayoutAttributeHeight && constraint.relation == NSLayoutRelationLessThanOrEqual) {
-                    constraint.constant = self.maxHeight;
-                    _textViewMaxHeightConstraint = constraint;
-                    return;
+                    [self removeConstraint:constraint];
+                    break;
                 }
             }
 
@@ -142,9 +141,8 @@ NSString *const QKAutoExpandingTextViewDidChangeHeight = @"qk_aetv_change_height
     else {
         for (NSLayoutConstraint *constraint in self.constraints) {
             if (constraint.firstAttribute == NSLayoutAttributeHeight && constraint.relation == NSLayoutRelationEqual) {
-                constraint.constant = textHeight;
-                _textViewHeightConstraint = constraint;
-                return;
+                [self removeConstraint:constraint];
+                break;
             }
         }
         

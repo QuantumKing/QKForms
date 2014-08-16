@@ -18,6 +18,7 @@ extern NSString *const QKAutoExpandingTextViewDidChangeHeight;
 
 @interface QKAutoExpandingTextView : UITextView
 
+// If maxHeight is a number other than 0, this view will not expand beyond maxHeight.
 @property (nonatomic, assign) CGFloat maxHeight;
 
 - (void)setDelegate:(id<QKAutoExpandingTextViewDelegate>)delegate;
