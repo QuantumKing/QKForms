@@ -23,6 +23,6 @@ Everything is handled automatically after you've designed your form. Any text vi
 
 and the class `QKBaseFormView` handles moving its text fields and text views out of the way of the keyboard. It also handles hiding the keyboard whenever it receives a tap gesture.
 
-###Installation via Cocoapods
+##Installation via Cocoapods
 
 Add `pod 'QKForms', '~> 0.0'` to your `Podfile` and run `pod` to install.
