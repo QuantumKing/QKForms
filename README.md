@@ -8,19 +8,19 @@ Automatically handles moving text fields and text views out of the way of the ke
 Here is a step by step guide to using QKForms using interface builder. The demo these steps refer to is included in `QKFormsDemo`.
 
 ###Step 1
-![](https://github.com/QuantumKing/QKForms/tree/master/QKFormsDemo/screenshots/step1.png)
+![](https://raw.githubusercontent.com/QuantumKing/QKForms/master/QKFormsDemo/screenshots/step1.png)
 
 ###Step 2
-![](https://github.com/QuantumKing/QKForms/tree/master/QKFormsDemo/screenshots/step2.png)
+![](https://raw.githubusercontent.com/QuantumKing/QKForms/master/QKFormsDemo/screenshots/step2.png)
 
 ###Step 3
-![](https://github.com/QuantumKing/QKForms/tree/master/QKFormsDemo/screenshots/step3.png)
+![](https://raw.githubusercontent.com/QuantumKing/QKForms/master/QKFormsDemo/screenshots/step3.png)
 
 ###Step 4
-![](https://github.com/QuantumKing/QKForms/tree/master/QKFormsDemo/screenshots/step4.png)
+![](https://raw.githubusercontent.com/QuantumKing/QKForms/master/QKFormsDemo/screenshots/step4.png)
 
 ###Step 5
-![](https://github.com/QuantumKing/QKForms/tree/master/QKFormsDemo/screenshots/step5.png)
+![](https://raw.githubusercontent.com/QuantumKing/QKForms/master/QKFormsDemo/screenshots/step5.png)
 
 ###Installation via Cocoapods
 
