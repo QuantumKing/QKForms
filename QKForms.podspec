@@ -78,7 +78,7 @@ Pod::Spec.new do |s|
   #  Supports git, hg, bzr, svn and HTTP.
   #
 
-  s.source       = { :git => "https://github.com/QuantumKing/QKForms.git", :commit => "19abe6f63933780f81efb08f1da700ebdd6a7ca7" }
+  s.source       = { :git => "https://github.com/QuantumKing/QKForms.git", :tag => "v0.0.1" }
 
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
