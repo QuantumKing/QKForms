@@ -5,7 +5,7 @@
 //  Copyright (c) 2014 Eric Webster. All rights reserved.
 //
 
-@class QKFormsOptions;
+#import "QKFormsOptions.h"
 
 @interface QKFormsScrollView : UIScrollView<UIGestureRecognizerDelegate>
 

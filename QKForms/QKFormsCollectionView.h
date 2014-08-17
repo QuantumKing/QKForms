@@ -7,7 +7,7 @@
 
 #import <UIKit/UIKit.h>
 
-@class QKFormsOptions;
+#import "QKFormsOptions.h"
 
 @interface QKFormsCollectionView : UICollectionView<UIGestureRecognizerDelegate>
 
