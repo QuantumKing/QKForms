@@ -1,15 +1,14 @@
 //
 //  UIScrollView+QKForms.m
-//  QKFormsDemo
 //
 //  Created by Eric Webster on 2014-08-16.
 //  Copyright (c) 2014 Eric Webster. All rights reserved.
 //
 
 #import "UIScrollView+QKForms.h"
-#import "../QKKeyboardStateListener.h"
-#import "../QKAutoExpandingTextView.h"
-#import "../QKFormsOptions.h"
+#import "QKKeyboardStateListener.h"
+#import "QKAutoExpandingTextView.h"
+#import "QKFormsOptions.h"
 #import <objc/runtime.h>
 
 @interface UIView (QKForms)
