@@ -25,9 +25,12 @@ and the class `QKBaseFormView` handles moving its text fields and text views out
 
 ##Options
 
-There are a few options and functions you may use on your `QKBaseFormView`:
+Each of the interfaces for `QKFormsScrollView`, `QKFormsTableView` and `QKFormsCollectionView` comes with the following:
 
 ``` obj-c
+// Options, which can be found in the QKFormsOptions class.
+@property (nonatomic) QKFormsOptions *options;
+
 // Navigates to the next field, based on vertical position.
 - (IBAction)nextField;
 
@@ -36,15 +39,27 @@ There are a few options and functions you may use on your `QKBaseFormView`:
 
 - (IBAction)dismissKeyboard;
 - (void)dismissKeyboardWithCompletion:(void (^)(void))completion;
+```
+
+There are a few options that you may set through `QKFormsOptions`:
+
+``` obj-c
+// Whether return navigates to the next field or not.
+@property (nonatomic, assign) BOOL returnShouldMoveToNextField;
 
 // An optional property which will be sent the TouchUpInside event
 // when return is pressed while editing the last field in the form.
 // The property returnShouldMoveToNextField must be set to YES in order
 // to use this.
-@property (nonatomic, weak) IBOutlet UIButton *submitButton;
+@property (nonatomic, weak) UIButton *submitButton;
 
 // The margin between the keyboard and the field being edited.
 @property (nonatomic, assign) CGFloat keyboardTopMargin;
+
+// Sliding animation customization. TODO: Doesn't quite work as expected.
+@property (nonatomic, assign) UIViewAnimationOptions animationOptions;
+@property (nonatomic, assign) NSTimeInterval animationDuration;
+@property (nonatomic, assign) NSTimeInterval animationDelay;
 
 // Whether the form view displays a shadow when its content overflows.
 // In order for this to work, this view must have a superview with the same bounds.
@@ -54,12 +69,13 @@ There are a few options and functions you may use on your `QKBaseFormView`:
 // if it is already above the keyboard.
 @property (nonatomic, assign) BOOL shouldFocusFields;
 ```
-and a single option on `QKAutoExpandingTextView`:
+QKForms provides a subclass of `UITextView` called `QKAutoExpandingTextView` which handles automatically expanding itself to fit the text its given. It can also have a maximum height set:
 
 ``` obj-c
 // If maxHeight is a number other than 0, this view will not expand beyond maxHeight.
 @property (nonatomic, assign) CGFloat maxHeight;
 ```
+Another useful view called `QKPlaceholderTextView`, which is a subclass of `QKAutoExpandingTextView`, allows for placeholder text to be set on a text view.
 
 ##Installation via Cocoapods
 
