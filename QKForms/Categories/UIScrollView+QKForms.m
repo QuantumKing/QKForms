@@ -158,6 +158,9 @@ static const int kFormPrivateDataKey;
                 if (offset.y < 0 || weakSelf.contentSize.height < CGRectGetHeight(weakSelf.bounds)) {
                     offset.y = 0;
                 }
+                else if (weakSelf.contentSize.height < CGRectGetHeight(weakSelf.bounds) + weakSelf.contentOffset.y) {
+                    offset.y = weakSelf.contentSize.height - CGRectGetHeight(weakSelf.bounds);
+                }
                 NSDictionary *info = [notification userInfo];
                 [weakSelf QKForms_slideToOffset:offset animated:YES userInfo:info];
                 data.contentOffsetDiff = nil;
