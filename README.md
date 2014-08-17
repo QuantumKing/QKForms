@@ -43,7 +43,7 @@ Each of `QKFormsScrollView`, `QKFormsTableView` and `QKFormsCollectionView` come
 // when return is pressed while editing the last field in the form.
 // The property returnShouldMoveToNextField must be set to YES in order
 // to use this.
-@property (nonatomic, weak) UIButton *submitButton;
+@property (nonatomic, weak) IBOutlet UIButton *submitButton;
 
 // Navigates to the next field, based on vertical position.
 - (IBAction)nextField;
