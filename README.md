@@ -27,7 +27,7 @@ Everything is handled automatically after you've designed your form. Any text vi
 
 ![](https://raw.githubusercontent.com/QuantumKing/QKForms/master/QKFormsDemo/screenshots/textview.png)
 
-and the class `QKBaseFormView` handles moving its text fields and text views out of the way of the keyboard. It also handles hiding the keyboard whenever it receives a tap gesture.
+and the class `QKFormsScrollView` handles moving its text fields and text views out of the way of the keyboard. It also handles hiding the keyboard whenever it receives a tap gesture.
 
 ![](https://raw.githubusercontent.com/QuantumKing/QKForms/master/QKFormsDemo/screenshots/field5.png)
 
