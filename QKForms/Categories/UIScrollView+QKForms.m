@@ -423,7 +423,6 @@ static const int kFormPrivateDataKey;
     
     if (!options.showsShadow) {
         data.shadowView.hidden = YES;
-        self.superview.clipsToBounds = NO;
         return;
     }
     
