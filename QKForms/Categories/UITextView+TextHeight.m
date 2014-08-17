@@ -11,14 +11,41 @@
 
 - (CGFloat)textHeight
 {
-    CGRect rect = [self.attributedText boundingRectWithSize:(CGSize){CGRectGetWidth(self.bounds) - 10.0f, CGFLOAT_MAX}
-                                               options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading)
-                                               context:nil];
-    
-    if ([self.attributedText length]) {
-        return floorf(rect.size.height + 20.0f);
+    if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_6_1) {
+
+        CGRect frame = self.bounds;
+        
+        UIEdgeInsets textContainerInsets = self.textContainerInset;
+        UIEdgeInsets contentInsets = self.contentInset;
+        
+        CGFloat leftRightPadding = textContainerInsets.left + textContainerInsets.right + self.textContainer.lineFragmentPadding * 2 + contentInsets.left + contentInsets.right;
+        CGFloat topBottomPadding = textContainerInsets.top + textContainerInsets.bottom + contentInsets.top + contentInsets.bottom;
+        
+        frame.size.width -= leftRightPadding;
+        frame.size.height -= topBottomPadding;
+        
+        NSString *textToMeasure = self.text;
+        unichar lastChar = [textToMeasure characterAtIndex:[textToMeasure length]-1];
+        if ([[NSCharacterSet newlineCharacterSet] characterIsMember:lastChar]) {
+            textToMeasure = [textToMeasure stringByAppendingString:@"-"];
+        }
+        
+        NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+        [paragraphStyle setLineBreakMode:NSLineBreakByWordWrapping];
+        
+        NSDictionary *attributes = @{ NSFontAttributeName: self.font, NSParagraphStyleAttributeName : paragraphStyle };
+        
+        CGRect size = [textToMeasure boundingRectWithSize:CGSizeMake(CGRectGetWidth(frame), MAXFLOAT)
+                                                  options:NSStringDrawingUsesLineFragmentOrigin
+                                               attributes:attributes
+                                                  context:nil];
+        
+        CGFloat measuredHeight = ceilf(CGRectGetHeight(size) + topBottomPadding);
+        return measuredHeight;
     }
-    return floorf(rect.size.height + self.font.lineHeight + 7.0f);
+    else {
+        return self.contentSize.height;
+    }
 }
 
 @end

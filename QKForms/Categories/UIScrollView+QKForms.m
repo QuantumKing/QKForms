@@ -7,7 +7,6 @@
 
 #import "UIScrollView+QKForms.h"
 #import "QKKeyboardStateListener.h"
-#import "QKAutoExpandingTextView.h"
 #import "QKFormsOptions.h"
 #import <objc/runtime.h>
 
@@ -94,6 +93,18 @@ static const int kFormPrivateDataKey;
         objc_setAssociatedObject(self, &kFormPrivateDataKey, data, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
     return data;
+}
+
+- (void)QKForms_setContentSize:(CGSize)contentSize
+{
+    QKFormsPrivateData *data = self.QKForms_privateData;
+    
+    if ([data.currentField isFirstResponder]) {
+        [self QKForms_slideUpToField:data.currentField];
+    }
+    else {
+        [self QKForms_updateShadow];
+    }
 }
 
 - (void)QKForms_setContentOffset:(CGPoint)contentOffset
@@ -307,18 +318,11 @@ static const int kFormPrivateDataKey;
     }];
     
     NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
-    QKFormsOptions *options = self.QKForms_formOptions;
     
     if ([firstResponder isKindOfClass:[UITextView class]]) {
         [defaultCenter addObserver:self selector:@selector(QKForms_textDidEndEditing:) name:UITextViewTextDidEndEditingNotification object:firstResponder];
-        
-        if (options.returnShouldMoveToNextField) {
-            [defaultCenter addObserver:self selector:@selector(QKForms_textDidChange:) name:UITextViewTextDidChangeNotification object:firstResponder];
-        }
-        
-        if ([firstResponder isKindOfClass:[QKAutoExpandingTextView class]]) {
-            [defaultCenter addObserver:self selector:@selector(QKForms_autoSizeTextViewDidChangeHeight:) name:QKAutoExpandingTextViewDidChangeHeight object:firstResponder];
-        }
+
+        [defaultCenter addObserver:self selector:@selector(QKForms_textDidChange:) name:UITextViewTextDidChangeNotification object:firstResponder];
         
         // Hack to get the correct cursor position upon editing.
         [self performSelectorOnMainThread:@selector(QKForms_slideUpToField:) withObject:firstResponder waitUntilDone:NO];
@@ -327,9 +331,7 @@ static const int kFormPrivateDataKey;
         [self QKForms_slideUpToField:firstResponder];
         [defaultCenter addObserver:self selector:@selector(QKForms_textDidEndEditing:) name:UITextFieldTextDidEndEditingNotification object:firstResponder];
         
-        if (options.returnShouldMoveToNextField) {
-            [firstResponder addTarget:self action:@selector(QKForms_nextField) forControlEvents:UIControlEventEditingDidEndOnExit];
-        }
+        [firstResponder addTarget:self action:@selector(QKForms_editingDidEndOnExit) forControlEvents:UIControlEventEditingDidEndOnExit];
     }
     
     data.currentField = firstResponder;
@@ -342,22 +344,35 @@ static const int kFormPrivateDataKey;
     [defaultCenter removeObserver:self name:UITextFieldTextDidEndEditingNotification object:nil];
     [defaultCenter removeObserver:self name:UITextViewTextDidEndEditingNotification object:nil];
     [defaultCenter removeObserver:self name:UITextViewTextDidChangeNotification object:nil];
-    [defaultCenter removeObserver:self name:QKAutoExpandingTextViewDidChangeHeight object:nil];
-    
+
     QKFormsPrivateData *data = self.QKForms_privateData;
     data.currentField = nil;
 }
 
+- (void)QKForms_editingDidEndOnExit
+{
+    QKFormsOptions *options = self.QKForms_formOptions;
+    if (options.returnShouldMoveToNextField) {
+        [self QKForms_nextField];
+    }
+}
+
 - (void)QKForms_textDidChange:(NSNotification *)notification
 {
-    id textResponder = notification.object;
-    NSString *text = [textResponder text];
-    NSRange range = [text rangeOfCharacterFromSet:[NSCharacterSet newlineCharacterSet]];
-    
-    if (range.location != NSNotFound) {
-        // User has pressed return button.
-        [textResponder setText:[text stringByReplacingCharactersInRange:range withString:@""]];
-        [self QKForms_nextField];
+    QKFormsOptions *options = self.QKForms_formOptions;
+    if (options.returnShouldInsertNewline) {
+        return;
+    }
+    else if (options.returnShouldMoveToNextField) {
+        id textResponder = notification.object;
+        NSString *text = [textResponder text];
+        NSRange range = [text rangeOfCharacterFromSet:[NSCharacterSet newlineCharacterSet]];
+        
+        if (range.location != NSNotFound) {
+            // User has pressed return.
+            [textResponder setText:[text stringByReplacingCharactersInRange:range withString:@""]];
+            [self QKForms_nextField];
+        }
     }
 }
 
@@ -398,16 +413,6 @@ static const int kFormPrivateDataKey;
         else {
             [self QKForms_previousField];
         }
-    }
-}
-
-#pragma mark - QKAutoExpandingTextViewDelegate methods
-
-- (void)QKForms_autoSizeTextViewDidChangeHeight:(NSNotification *)notification
-{
-    QKAutoExpandingTextView *autoExpandingTextView = notification.object;
-    if ([autoExpandingTextView isFirstResponder]) {
-        [self QKForms_slideUpToField:autoExpandingTextView animated:NO];
     }
 }
 

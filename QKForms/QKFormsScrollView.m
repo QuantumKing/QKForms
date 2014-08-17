@@ -18,6 +18,7 @@ extern NSString *const QKFormsWillSendSubmitEvent;
 - (void)QKForms_nextField;
 - (void)QKForms_previousField;
 
+- (void)QKForms_setContentSize:(CGSize)contentSize;
 - (void)QKForms_setContentOffset:(CGPoint)contentOffset;
 
 - (QKFormsOptions *)QKForms_formOptions;
@@ -101,6 +102,12 @@ extern NSString *const QKFormsWillSendSubmitEvent;
         return NO;
     }
     return YES;
+}
+
+- (void)setContentSize:(CGSize)contentSize
+{
+    [super setContentSize:contentSize];
+    [super QKForms_setContentSize:contentSize];
 }
 
 - (void)setContentOffset:(CGPoint)contentOffset
