@@ -20,7 +20,7 @@ Here is a step by step guide to using QKForms using interface builder. The demo 
 Everything is handled automatically after you've designed your form. Any text view with the class `QKAutoExpandingTextView` will expand as you type:
 
 ![](https://raw.githubusercontent.com/QuantumKing/QKForms/master/QKFormsDemo/screenshots/textview.png)
-![](https://raw.githubusercontent.com/QuantumKing/QKForms/master/QKFormsDemo/screenshots/field5.png)
+<img style="margin-left: 20px" src="https://raw.githubusercontent.com/QuantumKing/QKForms/master/QKFormsDemo/screenshots/field5.png" />
 
 and the class `QKBaseFormView` handles moving its text fields and text views out of the way of the keyboard. It also handles hiding the keyboard whenever it receives a tap gesture.
 
