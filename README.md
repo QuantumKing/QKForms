@@ -37,7 +37,7 @@ Each of `QKFormsScrollView`, `QKFormsTableView` and `QKFormsCollectionView` come
 
 ``` obj-c
 // Options, which can be found in the QKFormsOptions class.
-@property (nonatomic) QKFormsOptions *options;
+@property (nonatomic, readonly) QKFormsOptions *options;
 
 // An optional property which will be sent the TouchUpInside event
 // when return is pressed while editing the last field in the form.
