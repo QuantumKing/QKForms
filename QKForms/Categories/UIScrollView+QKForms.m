@@ -321,7 +321,6 @@ static const int kFormPrivateDataKey;
     
     if ([firstResponder isKindOfClass:[UITextView class]]) {
         [defaultCenter addObserver:self selector:@selector(QKForms_textDidEndEditing:) name:UITextViewTextDidEndEditingNotification object:firstResponder];
-        
         [defaultCenter addObserver:self selector:@selector(QKForms_textDidChange:) name:UITextViewTextDidChangeNotification object:firstResponder];
         
         // Hack to get the correct cursor position upon editing.
@@ -330,7 +329,6 @@ static const int kFormPrivateDataKey;
     else if ([firstResponder isKindOfClass:[UITextField class]]) {
         [self QKForms_slideUpToField:firstResponder];
         [defaultCenter addObserver:self selector:@selector(QKForms_textDidEndEditing:) name:UITextFieldTextDidEndEditingNotification object:firstResponder];
-        
         [firstResponder addTarget:self action:@selector(QKForms_editingDidEndOnExit) forControlEvents:UIControlEventEditingDidEndOnExit];
     }
     
@@ -425,6 +423,7 @@ static const int kFormPrivateDataKey;
     
     if (!options.showsShadow) {
         data.shadowView.hidden = YES;
+        self.superview.clipsToBounds = NO;
         return;
     }
     
