@@ -50,6 +50,7 @@ NSString *const QKFormsWillSendSubmitEvent = @"QKForms_will_send_submit_event";
 @property (nonatomic) UIView *shadowView;
 @property (nonatomic) NSValue *contentOffsetDiff;
 @property (nonatomic) UIView *currentField;
+@property (nonatomic, assign) UIDeviceOrientation currentOrientation;
 @property (nonatomic) NSArray *fields;
 
 @end
@@ -78,6 +79,7 @@ static const int kFormPrivateDataKey;
         options = [[QKFormsOptions alloc] init];
         options.showsShadow = YES;
         options.returnShouldMoveToNextField = YES;
+        options.keyboardTopMargin =  20;
         objc_setAssociatedObject(self, &kFormOptionsKey, options, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
     return options;
@@ -88,6 +90,7 @@ static const int kFormPrivateDataKey;
     QKFormsPrivateData *data = objc_getAssociatedObject(self, &kFormPrivateDataKey);
     if (data == nil) {
         data = [[QKFormsPrivateData alloc] init];
+        data.currentOrientation = [UIDevice currentDevice].orientation;
         objc_setAssociatedObject(self, &kFormPrivateDataKey, data, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
     return data;
@@ -193,7 +196,7 @@ static const int kFormPrivateDataKey;
     __weak typeof(self) weakSelf = self;
     __weak QKFormsOptions *options = self.QKForms_formOptions;
     __weak QKFormsPrivateData *data = self.QKForms_privateData;
-
+    
     void (^callback)(id notification) = ^(id notification){
         [[NSNotificationCenter defaultCenter] removeObserver:observer];
         
@@ -212,9 +215,8 @@ static const int kFormPrivateDataKey;
         }
         fieldFrame = [field convertRect:fieldFrame toView:weakSelf];
         
-        CGFloat defaultMargin = UIDeviceOrientationIsPortrait([UIDevice currentDevice].orientation) ? 44 : 11;
         CGPoint offset = weakSelf.contentOffset;
-        CGFloat dy = floorf(CGRectGetMaxY(fieldFrame) - CGRectGetMinY(keyboardFrame) + options.keyboardTopMargin + defaultMargin);
+        CGFloat dy = floorf(CGRectGetMaxY(fieldFrame) - CGRectGetMinY(keyboardFrame) + options.keyboardTopMargin);
         
         if (dy > 0 || options.shouldFocusFields) {
             offset.y += dy;
@@ -260,22 +262,35 @@ static const int kFormPrivateDataKey;
 
 - (void)QKForms_orientationDidChange:(NSNotification *)notification
 {
+    UIDeviceOrientation o = [UIDevice currentDevice].orientation;
+    switch (o) {
+        case UIDeviceOrientationPortrait:
+        case UIDeviceOrientationPortraitUpsideDown:
+        case UIDeviceOrientationLandscapeLeft:
+        case UIDeviceOrientationLandscapeRight:
+            break;
+            
+        default:
+            return;
+    }
+    
     QKFormsPrivateData *data = self.QKForms_privateData;
-
-    if (![data.currentField isFirstResponder]) {
+    
+    if (![data.currentField isFirstResponder] || data.currentOrientation == o) {
         return;
     }
+    data.currentOrientation = o;
     
     QKKeyboardStateListener *listener = [QKKeyboardStateListener sharedInstance];
     if ([listener isVisible] || [listener isAnimating]) {
-        [self QKForms_slideUpToField:data.currentField];
+        [self performSelectorOnMainThread:@selector(QKForms_slideUpToField:) withObject:data.currentField waitUntilDone:NO];
     }
 }
 
 - (void)QKForms_textDidBeginEditing:(NSNotification *)notification
 {
     QKFormsPrivateData *data = self.QKForms_privateData;
-
+    
     id firstResponder = notification.object;
     if (firstResponder == data.currentField) {
         return;
@@ -293,7 +308,7 @@ static const int kFormPrivateDataKey;
     
     NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
     QKFormsOptions *options = self.QKForms_formOptions;
-
+    
     if ([firstResponder isKindOfClass:[UITextView class]]) {
         [defaultCenter addObserver:self selector:@selector(QKForms_textDidEndEditing:) name:UITextViewTextDidEndEditingNotification object:firstResponder];
         
@@ -349,7 +364,7 @@ static const int kFormPrivateDataKey;
 - (void)QKForms_nextField
 {
     QKFormsPrivateData *data = self.QKForms_privateData;
-
+    
     NSUInteger idx = [data.fields indexOfObject:data.currentField];
     if (++idx < [data.fields count]) {
         UIView *field = data.fields[idx];
@@ -373,7 +388,7 @@ static const int kFormPrivateDataKey;
 - (void)QKForms_previousField
 {
     QKFormsPrivateData *data = self.QKForms_privateData;
-
+    
     NSUInteger idx = [data.fields indexOfObject:data.currentField];
     if (--idx > 0) {
         UIView *field = data.fields[idx];
@@ -402,14 +417,14 @@ static const int kFormPrivateDataKey;
 {
     QKFormsPrivateData *data = self.QKForms_privateData;
     QKFormsOptions *options = self.QKForms_formOptions;
-
+    
     if (!options.showsShadow) {
         data.shadowView.hidden = YES;
         return;
     }
     
     if (self.contentOffset.y < (self.contentSize.height - CGRectGetHeight(self.bounds) - 10)) {
-
+        
         if (data.shadowView == nil) {
             self.superview.clipsToBounds = YES;
             
@@ -431,7 +446,7 @@ static const int kFormPrivateDataKey;
     }
     else {
         data.shadowView.hidden = YES;
-    }    
+    }
 }
 
 - (void)QKForms_setShadowViewConstraints:(UIView *)shadowView
@@ -478,4 +493,3 @@ static const int kFormPrivateDataKey;
 
 @implementation QKFormsPrivateData
 @end
-
