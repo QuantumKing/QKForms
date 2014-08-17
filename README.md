@@ -59,17 +59,26 @@ There are a few options that you may set through `QKFormsOptions`:
 
 ``` obj-c
 // Whether return navigates to the next field or not.
+// Default: YES
 @property (nonatomic, assign) BOOL returnShouldMoveToNextField;
 
+// In text views, whether return should insert a newline character.
+// This overrides returnShouldMoveToNextField for text views.
+// Default: NO
+@property (nonatomic, assign) BOOL returnShouldInsertNewline;
+
 // The margin between the keyboard and the field being edited.
+// Default: 20
 @property (nonatomic, assign) CGFloat keyboardTopMargin;
 
 // Whether the form view displays a shadow when its content overflows.
 // In order for this to work, this view must have a superview with the same bounds.
+// Default: YES
 @property (nonatomic, assign) BOOL showsShadow;
 
 // This will force the field to be pulled down towards the keyboard, even
 // if it is already above the keyboard.
+// Default: NO
 @property (nonatomic, assign) BOOL shouldFocusFields;
 ```
 QKForms provides a subclass of `UITextView` called `QKAutoExpandingTextView` which handles automatically expanding itself to fit the text its given. It can also have a maximum height set:
