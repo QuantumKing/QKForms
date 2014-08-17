@@ -11,6 +11,8 @@
 #import "QKFormsOptions.h"
 #import <objc/runtime.h>
 
+NSString *const QKFormsWillSendSubmitEvent = @"QKForms_will_send_submit_event";
+
 @interface UIView (QKForms)
 
 - (NSArray *)QKForms_fields;
@@ -356,11 +358,11 @@ static const int kFormPrivateDataKey;
         }
     }
     else {
-        __weak QKFormsOptions *options = self.QKForms_formOptions;
+        __weak typeof(self) weakSelf = self;
         // At the last field. Submit!
         [self QKForms_dismissKeyboardWithCompletion:^{
-            // Press the submit button.
-            [options.submitButton sendActionsForControlEvents:UIControlEventTouchUpInside];
+            // Send a submit notification.
+            [[NSNotificationCenter defaultCenter] postNotificationName:QKFormsWillSendSubmitEvent object:weakSelf];
         }];
     }
 }

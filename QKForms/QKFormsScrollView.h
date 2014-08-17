@@ -12,6 +12,12 @@
 // Options, which can be found in the QKFormsOptions class.
 @property (nonatomic) QKFormsOptions *options;
 
+// An optional property which will be sent the TouchUpInside event
+// when return is pressed while editing the last field in the form.
+// The property returnShouldMoveToNextField must be set to YES in order
+// to use this.
+@property (nonatomic, weak) IBOutlet UIButton *submitButton;
+
 // Navigates to the next field, based on vertical position.
 - (IBAction)nextField;
 

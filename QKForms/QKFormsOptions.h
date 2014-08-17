@@ -12,12 +12,6 @@
 // Whether return navigates to the next field or not.
 @property (nonatomic, assign) BOOL returnShouldMoveToNextField;
 
-// An optional property which will be sent the TouchUpInside event
-// when return is pressed while editing the last field in the form.
-// The property returnShouldMoveToNextField must be set to YES in order
-// to use this.
-@property (nonatomic, weak) UIButton *submitButton;
-
 // The margin between the keyboard and the field being edited.
 @property (nonatomic, assign) CGFloat keyboardTopMargin;
 

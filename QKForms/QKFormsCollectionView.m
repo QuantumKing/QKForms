@@ -7,6 +7,8 @@
 
 #import "QKFormsCollectionView.h"
 
+extern NSString *const QKFormsWillSendSubmitEvent;
+
 @interface UIScrollView (QKFormsPrivate)
 
 - (void)QKForms_setup;
@@ -36,6 +38,8 @@
     recog.delegate = self;
     [self addGestureRecognizer:recog];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(submit) name:QKFormsWillSendSubmitEvent object:self];
+
     [super QKForms_setup];
 }
 
@@ -57,6 +61,11 @@
 - (void)previousField
 {
     [super QKForms_previousField];
+}
+
+- (void)submit
+{
+    [self.submitButton sendActionsForControlEvents:UIControlEventTouchUpInside];
 }
 
 - (id)init
