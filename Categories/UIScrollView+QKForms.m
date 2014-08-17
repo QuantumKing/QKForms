@@ -1,30 +1,33 @@
 //
-//  QKBaseFormViewController.m
+//  UIScrollView+QKForms.m
+//  QKFormsDemo
 //
-//  Created by Eric Webster on 2/12/2014.
+//  Created by Eric Webster on 2014-08-16.
 //  Copyright (c) 2014 Eric Webster. All rights reserved.
 //
 
-#import "QKBaseFormView.h"
+#import "UIScrollView+QKForms.h"
 #import "QKKeyboardStateListener.h"
 #import "QKAutoExpandingTextView.h"
+#import "QKFormsOptions.h"
+#import <objc/runtime.h>
 
 @interface UIView (QKForms)
 
-- (NSArray *)formFields;
+- (NSArray *)QKForms_fields;
 
 @end
 
 @implementation UIView (QKForms)
 
-- (NSArray *)formFields
+- (NSArray *)QKForms_fields
 {
     NSMutableArray *results = [NSMutableArray array];
-    [self _findFormFields:results];
+    [self QKForms_findFormFields:results];
     return [results copy];
 }
 
-- (void)_findFormFields:(NSMutableArray *)results
+- (void)QKForms_findFormFields:(NSMutableArray *)results
 {
     for (UIView *s in self.subviews) {
         if ([s isKindOfClass:[UITextField class]]) {
@@ -35,13 +38,13 @@
                 [results addObject:s];
             }
         }
-        [s _findFormFields:results];
+        [s QKForms_findFormFields:results];
     }
 }
 
 @end
 
-@interface QKBaseFormView ()
+@interface QKFormsPrivateData : NSObject
 
 @property (nonatomic) UIView *shadowView;
 @property (nonatomic) NSValue *contentOffsetDiff;
@@ -50,97 +53,98 @@
 
 @end
 
-@implementation QKBaseFormView
+@implementation UIScrollView (QKForms)
 
-- (void)setup
+static const int kFormOptionsKey;
+static const int kFormPrivateDataKey;
+
+- (void)QKForms_setup
 {
     // Start up an instance of the keyboard listener.
     [QKKeyboardStateListener sharedInstance];
     
-    self.returnShouldMoveToNextField = YES;
-
-    self.delegate = self;
-    
-    UITapGestureRecognizer *recog = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];
-    recog.cancelsTouchesInView = NO;
-    recog.delegate = self;
-    [self addGestureRecognizer:recog];
-    
     NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
-
-    [defaultCenter addObserver:self selector:@selector(textDidBeginEditing:) name:UITextViewTextDidBeginEditingNotification object:nil];
-    [defaultCenter addObserver:self selector:@selector(textDidBeginEditing:) name:UITextFieldTextDidBeginEditingNotification object:nil];
-    [defaultCenter addObserver:self selector:@selector(orientationDidChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
+    
+    [defaultCenter addObserver:self selector:@selector(QKForms_textDidBeginEditing:) name:UITextViewTextDidBeginEditingNotification object:nil];
+    [defaultCenter addObserver:self selector:@selector(QKForms_textDidBeginEditing:) name:UITextFieldTextDidBeginEditingNotification object:nil];
+    [defaultCenter addObserver:self selector:@selector(QKForms_orientationDidChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
 }
 
-- (id)init
+- (QKFormsOptions *)QKForms_formOptions
 {
-    if (self = [super init]) {
-        [self setup];
+    QKFormsOptions *options = objc_getAssociatedObject(self, &kFormOptionsKey);
+    if (options == nil) {
+        options = [[QKFormsOptions alloc] init];
+        options.showsShadow = YES;
+        options.returnShouldMoveToNextField = YES;
+        objc_setAssociatedObject(self, &kFormOptionsKey, options, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
-    return self;
+    return options;
 }
 
-- (id)initWithFrame:(CGRect)frame
+- (QKFormsPrivateData *)QKForms_privateData
 {
-    if (self = [super initWithFrame:frame]) {
-        [self setup];
+    QKFormsPrivateData *data = objc_getAssociatedObject(self, &kFormPrivateDataKey);
+    if (data == nil) {
+        data = [[QKFormsPrivateData alloc] init];
+        objc_setAssociatedObject(self, &kFormPrivateDataKey, data, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
-    return self;
+    return data;
 }
 
-- (void)awakeFromNib
+- (void)QKForms_setContentOffset:(CGPoint)contentOffset
 {
-    [super awakeFromNib];
-    [self setup];
-}
-
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
-{
-    if ([touch.view isKindOfClass:[UIButton class]]) {
-        return NO;
+    QKFormsPrivateData *data = self.QKForms_privateData;
+    
+    if (![data.currentField isFirstResponder]) {
+        [self QKForms_forceSetContentOffset:contentOffset];
+        [self QKForms_updateShadow];
     }
-    return YES;
 }
 
-- (void)slideToOffset:(CGPoint)offset animated:(BOOL)animated userInfo:(NSDictionary *)userInfo
+- (void)QKForms_forceSetContentOffset:(CGPoint)contentOffset
 {
+    // Override in subclasses.
+    return;
+}
+
+- (void)QKForms_slideToOffset:(CGPoint)offset animated:(BOOL)animated userInfo:(NSDictionary *)userInfo
+{
+    QKFormsOptions *options = self.QKForms_formOptions;
+    
     if (animated) {
-        UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
+        UIViewAnimationOptions animationOptions = UIViewAnimationOptionBeginFromCurrentState;
         UIViewAnimationCurve animationCurve;
         
-        if (self.animationOptions) {
-            options |= self.animationOptions;
+        if (options.animationOptions) {
+            animationOptions |= options.animationOptions;
         }
         else {
             NSNumber *curveValue = userInfo[UIKeyboardAnimationCurveUserInfoKey];
             animationCurve = curveValue.intValue;
-            options |= (animationCurve << 16);
+            animationOptions |= (animationCurve << 16);
         }
         
-        NSTimeInterval duration = self.animationDuration;
+        NSTimeInterval duration = options.animationDuration;
         if (duration == 0) {
             NSNumber *number = userInfo[UIKeyboardAnimationDurationUserInfoKey];
             duration = [number doubleValue];
         }
-                
-        [UIView animateWithDuration:duration delay:self.animationDelay options:options animations:^{
-            [super setContentOffset:offset];
+        
+        [UIView animateWithDuration:duration delay:options.animationDelay options:animationOptions animations:^{
+            [self QKForms_forceSetContentOffset:offset];
         } completion:nil];
     }
     else {
-        [super setContentOffset:offset];
+        [self QKForms_forceSetContentOffset:offset];
     }
 }
 
-- (void)dismissKeyboardWithCompletion:(void (^)(void))completion
+- (void)QKForms_dismissKeyboardWithCompletion:(void (^)(void))completion
 {
-    if (self.contentOffsetDiff) {
+    __weak QKFormsPrivateData *data = self.QKForms_privateData;
+    
+    if (data.contentOffsetDiff) {
         QKKeyboardStateListener *listener = [QKKeyboardStateListener sharedInstance];
         
         if ([listener isVisible] && ![listener isAnimating]) {
@@ -148,17 +152,17 @@
             __block __weak id willHideObserver = [[NSNotificationCenter defaultCenter] addObserverForName:UIKeyboardWillHideNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification){
                 [[NSNotificationCenter defaultCenter] removeObserver:willHideObserver];
                 
-                CGPoint offset = [weakSelf.contentOffsetDiff CGPointValue];
+                CGPoint offset = [data.contentOffsetDiff CGPointValue];
                 offset.y += weakSelf.contentOffset.y;
                 if (offset.y < 0 || weakSelf.contentSize.height < CGRectGetHeight(weakSelf.bounds)) {
                     offset.y = 0;
                 }
                 NSDictionary *info = [notification userInfo];
-                [weakSelf slideToOffset:offset animated:YES userInfo:info];
-                weakSelf.contentOffsetDiff = nil;
+                [weakSelf QKForms_slideToOffset:offset animated:YES userInfo:info];
+                data.contentOffsetDiff = nil;
             }];
-
-            if (![self.currentField resignFirstResponder]) {
+            
+            if (![data.currentField resignFirstResponder]) {
                 [[NSNotificationCenter defaultCenter] removeObserver:willHideObserver];
             }
             else if (completion) {
@@ -174,23 +178,17 @@
     }
 }
 
-- (IBAction)dismissKeyboard
+- (void)QKForms_dismissKeyboard
 {
-    [self dismissKeyboardWithCompletion:nil];
+    [self QKForms_dismissKeyboardWithCompletion:nil];
 }
 
-- (void)setContentOffset:(CGPoint)contentOffset
-{
-    // Hack to prevent contentOffset being reset whenever contentSize changes while editing.
-    if (![self.currentField isFirstResponder]) {
-        [super setContentOffset:contentOffset];
-    }
-}
-
-- (void)slideUpToField:(UIView *)field animated:(BOOL)animated
+- (void)QKForms_slideUpToField:(UIView *)field animated:(BOOL)animated
 {
     __block __weak id observer;
     __weak typeof(self) weakSelf = self;
+    __weak QKFormsOptions *options = self.QKForms_formOptions;
+    __weak QKFormsPrivateData *data = self.QKForms_privateData;
 
     void (^callback)(id notification) = ^(id notification){
         [[NSNotificationCenter defaultCenter] removeObserver:observer];
@@ -201,7 +199,7 @@
         CGRect fieldFrame;
         
         if ([field isKindOfClass:[UITextView class]]) {
-        // If field is a text view, then slide to the caret frame.
+            // If field is a text view, then slide to the caret frame.
             UITextPosition *pos = [(UITextView *)field selectedTextRange].start;
             fieldFrame = [(UITextView *)field caretRectForPosition:pos];
         }
@@ -212,31 +210,31 @@
         
         CGFloat defaultMargin = UIDeviceOrientationIsPortrait([UIDevice currentDevice].orientation) ? 44 : 11;
         CGPoint offset = weakSelf.contentOffset;
-        CGFloat dy = floorf(CGRectGetMaxY(fieldFrame) - CGRectGetMinY(keyboardFrame) + weakSelf.keyboardTopMargin + defaultMargin);
+        CGFloat dy = floorf(CGRectGetMaxY(fieldFrame) - CGRectGetMinY(keyboardFrame) + options.keyboardTopMargin + defaultMargin);
         
-        if (dy > 0 || self.shouldFocusFields) {
+        if (dy > 0 || options.shouldFocusFields) {
             offset.y += dy;
-            weakSelf.contentOffsetDiff = [NSValue valueWithCGPoint:CGPointMake(0, -dy)];
-            [weakSelf slideToOffset:offset animated:animated userInfo:info];
+            data.contentOffsetDiff = [NSValue valueWithCGPoint:CGPointMake(0, -dy)];
+            [weakSelf QKForms_slideToOffset:offset animated:animated userInfo:info];
         }
         else {
-            UIView *firstField = [weakSelf.fields firstObject];
+            UIView *firstField = [data.fields firstObject];
             CGFloat y = CGRectGetMinY([firstField convertRect:firstField.bounds toView:weakSelf]);
             
             if (weakSelf.contentSize.height < CGRectGetHeight(weakSelf.bounds) && offset.y > 0) {
                 offset.y += MAX(dy, -offset.y);
-                weakSelf.contentOffsetDiff = [NSValue valueWithCGPoint:CGPointZero];
-                [weakSelf slideToOffset:offset animated:animated userInfo:info];
+                data.contentOffsetDiff = [NSValue valueWithCGPoint:CGPointZero];
+                [weakSelf QKForms_slideToOffset:offset animated:animated userInfo:info];
             }
             else if (y < offset.y) {
                 offset.y += dy;
-                weakSelf.contentOffsetDiff = [NSValue valueWithCGPoint:CGPointZero];
-                [weakSelf slideToOffset:offset animated:animated userInfo:info];
+                data.contentOffsetDiff = [NSValue valueWithCGPoint:CGPointZero];
+                [weakSelf QKForms_slideToOffset:offset animated:animated userInfo:info];
             }
             else if (offset.y + dy < 0) {
                 offset.y = 0;
-                weakSelf.contentOffsetDiff = [NSValue valueWithCGPoint:CGPointZero];
-                [weakSelf slideToOffset:offset animated:animated userInfo:info];
+                data.contentOffsetDiff = [NSValue valueWithCGPoint:CGPointZero];
+                [weakSelf QKForms_slideToOffset:offset animated:animated userInfo:info];
             }
         }
     };
@@ -251,69 +249,74 @@
     }
 }
 
-- (void)slideUpToField:(UIView *)field
+- (void)QKForms_slideUpToField:(UIView *)field
 {
-    [self slideUpToField:field animated:YES];
+    [self QKForms_slideUpToField:field animated:YES];
 }
 
-- (void)orientationDidChange:(NSNotification *)notification
+- (void)QKForms_orientationDidChange:(NSNotification *)notification
 {
-    if (![self.currentField isFirstResponder]) {
+    QKFormsPrivateData *data = self.QKForms_privateData;
+
+    if (![data.currentField isFirstResponder]) {
         return;
     }
     
     QKKeyboardStateListener *listener = [QKKeyboardStateListener sharedInstance];
     if ([listener isVisible] || [listener isAnimating]) {
-        [self slideUpToField:self.currentField];
+        [self QKForms_slideUpToField:data.currentField];
     }
 }
 
-- (void)textDidBeginEditing:(NSNotification *)notification
+- (void)QKForms_textDidBeginEditing:(NSNotification *)notification
 {
+    QKFormsPrivateData *data = self.QKForms_privateData;
+
     id firstResponder = notification.object;
-    if (firstResponder == self.currentField) {
+    if (firstResponder == data.currentField) {
         return;
     }
     
-    self.fields = [self formFields];
-    if (![self.fields containsObject:firstResponder]) {
+    data.fields = [self QKForms_fields];
+    if (![data.fields containsObject:firstResponder]) {
         return;
     }
-    self.fields = [self.fields sortedArrayUsingComparator:^NSComparisonResult(UIView *v1, UIView *v2){
+    data.fields = [data.fields sortedArrayUsingComparator:^NSComparisonResult(UIView *v1, UIView *v2){
         CGFloat y1 = CGRectGetMinY([v1 convertRect:v1.bounds toView:self]);
         CGFloat y2 = CGRectGetMinY([v2 convertRect:v2.bounds toView:self]);
         return y1 > y2 ? NSOrderedDescending : NSOrderedAscending;
     }];
     
     NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
+    QKFormsOptions *options = self.QKForms_formOptions;
 
     if ([firstResponder isKindOfClass:[UITextView class]]) {
-        [defaultCenter addObserver:self selector:@selector(textDidEndEditing:) name:UITextViewTextDidEndEditingNotification object:firstResponder];
+        [defaultCenter addObserver:self selector:@selector(QKForms_textDidEndEditing:) name:UITextViewTextDidEndEditingNotification object:firstResponder];
         
-        if (self.returnShouldMoveToNextField) {
-            [defaultCenter addObserver:self selector:@selector(textDidChange:) name:UITextViewTextDidChangeNotification object:firstResponder];
+        if (options.returnShouldMoveToNextField) {
+            [defaultCenter addObserver:self selector:@selector(QKForms_textDidChange:) name:UITextViewTextDidChangeNotification object:firstResponder];
         }
         
         if ([firstResponder isKindOfClass:[QKAutoExpandingTextView class]]) {
-            [defaultCenter addObserver:self selector:@selector(autoSizeTextViewDidChangeHeight:) name:QKAutoExpandingTextViewDidChangeHeight object:firstResponder];
+            [defaultCenter addObserver:self selector:@selector(QKForms_autoSizeTextViewDidChangeHeight:) name:QKAutoExpandingTextViewDidChangeHeight object:firstResponder];
         }
         
         // Hack to get the correct cursor position upon editing.
-        [self performSelectorOnMainThread:@selector(slideUpToField:) withObject:firstResponder waitUntilDone:NO];
+        [self performSelectorOnMainThread:@selector(QKForms_slideUpToField:) withObject:firstResponder waitUntilDone:NO];
     }
     else if ([firstResponder isKindOfClass:[UITextField class]]) {
-        [self slideUpToField:firstResponder];
-        [defaultCenter addObserver:self selector:@selector(textDidEndEditing:) name:UITextFieldTextDidEndEditingNotification object:firstResponder];
+        [self QKForms_slideUpToField:firstResponder];
+        [defaultCenter addObserver:self selector:@selector(QKForms_textDidEndEditing:) name:UITextFieldTextDidEndEditingNotification object:firstResponder];
         
-        if (self.returnShouldMoveToNextField) {
-            [firstResponder addTarget:self action:@selector(nextField) forControlEvents:UIControlEventEditingDidEndOnExit];
+        if (options.returnShouldMoveToNextField) {
+            [firstResponder addTarget:self action:@selector(QKForms_nextField) forControlEvents:UIControlEventEditingDidEndOnExit];
         }
     }
     
-    self.currentField = firstResponder;
+    data.currentField = firstResponder;
 }
 
-- (void)textDidEndEditing:(NSNotification *)notification
+- (void)QKForms_textDidEndEditing:(NSNotification *)notification
 {
     NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
     
@@ -322,10 +325,11 @@
     [defaultCenter removeObserver:self name:UITextViewTextDidChangeNotification object:nil];
     [defaultCenter removeObserver:self name:QKAutoExpandingTextViewDidChangeHeight object:nil];
     
-    self.currentField = nil;
+    QKFormsPrivateData *data = self.QKForms_privateData;
+    data.currentField = nil;
 }
 
-- (void)textDidChange:(NSNotification *)notification
+- (void)QKForms_textDidChange:(NSNotification *)notification
 {
     id textResponder = notification.object;
     NSString *text = [textResponder text];
@@ -334,98 +338,100 @@
     if (range.location != NSNotFound) {
         // User has pressed return button.
         [textResponder setText:[text stringByReplacingCharactersInRange:range withString:@""]];
-        [self nextField];
+        [self QKForms_nextField];
     }
 }
 
-- (void)nextField
+- (void)QKForms_nextField
 {
-    NSUInteger idx = [self.fields indexOfObject:self.currentField];
-    if (++idx < [self.fields count]) {
-        UIView *field = self.fields[idx];
+    QKFormsPrivateData *data = self.QKForms_privateData;
+
+    NSUInteger idx = [data.fields indexOfObject:data.currentField];
+    if (++idx < [data.fields count]) {
+        UIView *field = data.fields[idx];
         if ([field canBecomeFirstResponder]) {
-            [self.fields[idx] becomeFirstResponder];
+            [data.fields[idx] becomeFirstResponder];
         }
         else {
-            [self nextField];
+            [self QKForms_nextField];
         }
     }
     else {
+        __weak QKFormsOptions *options = self.QKForms_formOptions;
         // At the last field. Submit!
-        [self dismissKeyboardWithCompletion:^{
+        [self QKForms_dismissKeyboardWithCompletion:^{
             // Press the submit button.
-            [self.submitButton sendActionsForControlEvents:UIControlEventTouchUpInside];
+            [options.submitButton sendActionsForControlEvents:UIControlEventTouchUpInside];
         }];
     }
 }
 
-- (void)previousField
+- (void)QKForms_previousField
 {
-    NSUInteger idx = [self.fields indexOfObject:self.currentField];
+    QKFormsPrivateData *data = self.QKForms_privateData;
+
+    NSUInteger idx = [data.fields indexOfObject:data.currentField];
     if (--idx > 0) {
-        UIView *field = self.fields[idx];
+        UIView *field = data.fields[idx];
         if ([field canBecomeFirstResponder]) {
-            [self.fields[idx] becomeFirstResponder];
+            [data.fields[idx] becomeFirstResponder];
         }
         else {
-            [self previousField];
+            [self QKForms_previousField];
         }
     }
 }
 
 #pragma mark - QKAutoExpandingTextViewDelegate methods
 
-- (void)autoSizeTextViewDidChangeHeight:(NSNotification *)notification
+- (void)QKForms_autoSizeTextViewDidChangeHeight:(NSNotification *)notification
 {
     QKAutoExpandingTextView *autoExpandingTextView = notification.object;
     if ([autoExpandingTextView isFirstResponder]) {
-        [self slideUpToField:autoExpandingTextView animated:NO];
+        [self QKForms_slideUpToField:autoExpandingTextView animated:NO];
     }
 }
 
-#pragma mark - UIScrollView bottom shadow
+#pragma mark - Overflow shadow
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+- (void)QKForms_updateShadow
 {
-    self.shadowView.hidden = scrollView.contentOffset.y >= (scrollView.contentSize.height - CGRectGetHeight(scrollView.bounds) - 10);
-}
+    QKFormsPrivateData *data = self.QKForms_privateData;
 
-- (void)layoutSubviews
-{
     if (self.contentOffset.y < (self.contentSize.height - CGRectGetHeight(self.bounds) - 10)) {
-        
-        if (!self.shadowView) {
+
+        if (data.shadowView == nil) {
             self.superview.clipsToBounds = YES;
             
-            self.shadowView = [[UIView alloc] init];
-            self.shadowView.layer.shadowColor = [[UIColor blackColor] CGColor];
-            self.shadowView.layer.shadowOpacity = 1.0;
-            self.shadowView.layer.shadowRadius = 8.0;
-            self.shadowView.layer.shadowPath = [UIBezierPath bezierPathWithRect:self.shadowView.bounds].CGPath;
+            UIView *shadowView = [[UIView alloc] init];;
+            shadowView.layer.shadowColor = [[UIColor blackColor] CGColor];
+            shadowView.layer.shadowOpacity = 1.0;
+            shadowView.layer.shadowRadius = 8.0;
+            shadowView.layer.shadowPath = [UIBezierPath bezierPathWithRect:shadowView.bounds].CGPath;
             
             // TODO: If no superview exists, add one.
-            [self.superview addSubview:self.shadowView];
-            [self setShadowViewConstraints];
-            [self.shadowView layoutIfNeeded];
+            [self.superview addSubview:shadowView];
+            [self QKForms_setShadowViewConstraints:shadowView];
+            [shadowView layoutIfNeeded];
+            data.shadowView = shadowView;
         }
         
-        self.shadowView.layer.shadowPath = [UIBezierPath bezierPathWithRect:self.shadowView.bounds].CGPath;
+        data.shadowView.layer.shadowPath = [UIBezierPath bezierPathWithRect:data.shadowView.bounds].CGPath;
+        data.shadowView.hidden = NO;
     }
     else {
-        self.shadowView.hidden = YES;
-    }
-
-    [super layoutSubviews];
+        data.shadowView.hidden = YES;
+    }    
 }
 
-- (void)setShadowViewConstraints
+- (void)QKForms_setShadowViewConstraints:(UIView *)shadowView
 {
-    self.shadowView.translatesAutoresizingMaskIntoConstraints = NO;
-
+    shadowView.translatesAutoresizingMaskIntoConstraints = NO;
+    
     NSLayoutConstraint *cb = [NSLayoutConstraint constraintWithItem:self.superview
                                                           attribute:NSLayoutAttributeBottom
                                                           relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.shadowView
+                                                             toItem:shadowView
                                                           attribute:NSLayoutAttributeBottom
                                                          multiplier:1.0
                                                            constant:-4];
@@ -433,7 +439,7 @@
     NSLayoutConstraint *cl = [NSLayoutConstraint constraintWithItem:self.superview
                                                           attribute:NSLayoutAttributeLeading
                                                           relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.shadowView
+                                                             toItem:shadowView
                                                           attribute:NSLayoutAttributeLeading
                                                          multiplier:1.0
                                                            constant:0];
@@ -441,12 +447,12 @@
     NSLayoutConstraint *ct = [NSLayoutConstraint constraintWithItem:self.superview
                                                           attribute:NSLayoutAttributeTrailing
                                                           relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.shadowView
+                                                             toItem:shadowView
                                                           attribute:NSLayoutAttributeTrailing
                                                          multiplier:1.0
                                                            constant:0];
     
-    NSLayoutConstraint *ch = [NSLayoutConstraint constraintWithItem:self.shadowView
+    NSLayoutConstraint *ch = [NSLayoutConstraint constraintWithItem:shadowView
                                                           attribute:NSLayoutAttributeHeight
                                                           relatedBy:NSLayoutRelationEqual
                                                              toItem:nil
@@ -455,8 +461,11 @@
                                                            constant:4];
     
     [self.superview addConstraints:@[cb,cl,ct]];
-    [self.shadowView addConstraint:ch];
+    [shadowView addConstraint:ch];
 }
 
+@end
+
+@implementation QKFormsPrivateData
 @end
 

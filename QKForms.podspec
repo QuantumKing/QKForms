@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "QKForms"
-  s.version      = "0.0.1"
+  s.version      = "0.0.2"
   s.summary      = "Move text fields and text views out of the way of the keyboard and expand text views to fit their text. Device orientation agnostic."
 
   s.description  = <<-DESC
@@ -29,7 +29,7 @@ Pod::Spec.new do |s|
                    DESC
 
   s.homepage     = "https://github.com/QuantumKing/QKForms"
-  # s.screenshots  = "www.example.com/screenshots_1.gif", "www.example.com/screenshots_2.gif"
+  s.screenshots  = "https://raw.githubusercontent.com/QuantumKing/QKForms/master/QKFormsDemo/screenshots/textview.png"
 
 
   # ―――  Spec License  ――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
@@ -78,7 +78,7 @@ Pod::Spec.new do |s|
   #  Supports git, hg, bzr, svn and HTTP.
   #
 
-  s.source       = { :git => "https://github.com/QuantumKing/QKForms.git", :tag => "v0.0.1" }
+  s.source       = { :git => "https://github.com/QuantumKing/QKForms.git", :tag => "v0.0.2" }
 
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
