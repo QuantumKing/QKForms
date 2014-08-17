@@ -5,7 +5,7 @@ Automatically handles moving text fields and text views out of the way of the ke
 
 ##Usage
 
-Here is a step by step guide to using QKForms using interface builder. The demo these steps refer to is included in `QKFormsDemo`.
+Here is a step by step guide to using QKForms using interface builder. The demo these steps refer to is included in QKFormsDemo.
 
 ###Step 1
 Create a scroll view (or table view, or collection view) and add the `QKFormsScrollView` class to it.
