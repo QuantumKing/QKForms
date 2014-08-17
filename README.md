@@ -64,11 +64,6 @@ There are a few options that you may set through `QKFormsOptions`:
 // The margin between the keyboard and the field being edited.
 @property (nonatomic, assign) CGFloat keyboardTopMargin;
 
-// Sliding animation customization. TODO: Doesn't quite work as expected.
-@property (nonatomic, assign) UIViewAnimationOptions animationOptions;
-@property (nonatomic, assign) NSTimeInterval animationDuration;
-@property (nonatomic, assign) NSTimeInterval animationDelay;
-
 // Whether the form view displays a shadow when its content overflows.
 // In order for this to work, this view must have a superview with the same bounds.
 @property (nonatomic, assign) BOOL showsShadow;
