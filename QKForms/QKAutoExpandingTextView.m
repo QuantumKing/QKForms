@@ -59,6 +59,15 @@ NSString *const QKAutoExpandingTextViewDidChangeHeight = @"qk_aetv_change_height
     return (id<QKAutoExpandingTextViewDelegate>)[super delegate];
 }
 
+- (void)setContentOffset:(CGPoint)contentOffset
+{
+    // Prevent textview from scrolling up when its content size increases.
+    if (self.contentSize.height < CGRectGetHeight(self.bounds) + contentOffset.y) {
+        contentOffset.y = self.contentSize.height - CGRectGetHeight(self.bounds);
+    }
+    [super setContentOffset:contentOffset];
+}
+
 - (void)setText:(NSString *)text
 {
     [super setText:text];
@@ -115,7 +124,7 @@ NSString *const QKAutoExpandingTextViewDidChangeHeight = @"qk_aetv_change_height
                     break;
                 }
             }
-
+            
             _textViewMaxHeightConstraint =
             [NSLayoutConstraint constraintWithItem:self
                                          attribute:NSLayoutAttributeHeight

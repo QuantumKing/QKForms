@@ -21,7 +21,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="This is an auto expanding text view" translatesAutoresizingMaskIntoConstraints="NO" id="xOI-Vf-nyY" customClass="QKAutoExpandingTextView">
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" text="This is an auto expanding text view" translatesAutoresizingMaskIntoConstraints="NO" id="xOI-Vf-nyY" customClass="QKAutoExpandingTextView">
                                         <rect key="frame" x="20" y="56" width="280" height="50"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <color key="backgroundColor" red="0.0" green="0.41037221280000002" blue="0.85449630799999998" alpha="1" colorSpace="calibratedRGB"/>

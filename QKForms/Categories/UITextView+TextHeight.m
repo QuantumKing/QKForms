@@ -12,7 +12,7 @@
 - (CGFloat)textHeight
 {
     if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_6_1) {
-
+        
         CGRect frame = self.bounds;
         
         UIEdgeInsets textContainerInsets = self.textContainerInset;
@@ -22,29 +22,28 @@
         CGFloat topBottomPadding = textContainerInsets.top + textContainerInsets.bottom + contentInsets.top + contentInsets.bottom;
         
         frame.size.width -= leftRightPadding;
-        frame.size.height -= topBottomPadding;
         
-        NSString *textToMeasure = self.text;
-        unichar lastChar = [textToMeasure characterAtIndex:[textToMeasure length]-1];
-        if ([[NSCharacterSet newlineCharacterSet] characterIsMember:lastChar]) {
-            textToMeasure = [textToMeasure stringByAppendingString:@"-"];
+        NSMutableAttributedString *textToMeasure = [self.attributedText mutableCopy];
+        if ([textToMeasure length] > 0) {
+            unichar lastChar = [textToMeasure.string characterAtIndex:[textToMeasure length]-1];
+            if ([[NSCharacterSet newlineCharacterSet] characterIsMember:lastChar]) {
+                NSAttributedString *temp = [[NSAttributedString alloc] initWithString:@"-"];
+                [textToMeasure appendAttributedString:temp];
+            }
+            
+            CGRect size = [textToMeasure boundingRectWithSize:CGSizeMake(CGRectGetWidth(frame), MAXFLOAT)
+                                                      options:NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading
+                                                      context:nil];
+            
+            CGFloat measuredHeight = ceilf(CGRectGetHeight(size) + topBottomPadding) + 2;
+            return measuredHeight;
         }
-        
-        NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-        [paragraphStyle setLineBreakMode:NSLineBreakByWordWrapping];
-        
-        NSDictionary *attributes = @{ NSFontAttributeName: self.font, NSParagraphStyleAttributeName : paragraphStyle };
-        
-        CGRect size = [textToMeasure boundingRectWithSize:CGSizeMake(CGRectGetWidth(frame), MAXFLOAT)
-                                                  options:NSStringDrawingUsesLineFragmentOrigin
-                                               attributes:attributes
-                                                  context:nil];
-        
-        CGFloat measuredHeight = ceilf(CGRectGetHeight(size) + topBottomPadding);
-        return measuredHeight;
+        else {
+            return ceilf(self.font.lineHeight + topBottomPadding) + 2;
+        }
     }
     else {
-        return self.contentSize.height;
+        return self.contentSize.height + 2;
     }
 }
 

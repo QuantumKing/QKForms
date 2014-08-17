@@ -100,7 +100,7 @@ static const int kFormPrivateDataKey;
     QKFormsPrivateData *data = self.QKForms_privateData;
     
     if ([data.currentField isFirstResponder]) {
-        [self QKForms_slideUpToField:data.currentField];
+        [self performSelectorOnMainThread:@selector(QKForms_slideUpToField:) withObject:data.currentField waitUntilDone:NO];
     }
     else {
         [self QKForms_updateShadow];
@@ -321,7 +321,7 @@ static const int kFormPrivateDataKey;
     
     if ([firstResponder isKindOfClass:[UITextView class]]) {
         [defaultCenter addObserver:self selector:@selector(QKForms_textDidEndEditing:) name:UITextViewTextDidEndEditingNotification object:firstResponder];
-
+        
         [defaultCenter addObserver:self selector:@selector(QKForms_textDidChange:) name:UITextViewTextDidChangeNotification object:firstResponder];
         
         // Hack to get the correct cursor position upon editing.
@@ -344,7 +344,7 @@ static const int kFormPrivateDataKey;
     [defaultCenter removeObserver:self name:UITextFieldTextDidEndEditingNotification object:nil];
     [defaultCenter removeObserver:self name:UITextViewTextDidEndEditingNotification object:nil];
     [defaultCenter removeObserver:self name:UITextViewTextDidChangeNotification object:nil];
-
+    
     QKFormsPrivateData *data = self.QKForms_privateData;
     data.currentField = nil;
 }
