@@ -39,6 +39,12 @@ Each of `QKFormsScrollView`, `QKFormsTableView` and `QKFormsCollectionView` come
 // Options, which can be found in the QKFormsOptions class.
 @property (nonatomic) QKFormsOptions *options;
 
+// An optional property which will be sent the TouchUpInside event
+// when return is pressed while editing the last field in the form.
+// The property returnShouldMoveToNextField must be set to YES in order
+// to use this.
+@property (nonatomic, weak) UIButton *submitButton;
+
 // Navigates to the next field, based on vertical position.
 - (IBAction)nextField;
 
@@ -54,12 +60,6 @@ There are a few options that you may set through `QKFormsOptions`:
 ``` obj-c
 // Whether return navigates to the next field or not.
 @property (nonatomic, assign) BOOL returnShouldMoveToNextField;
-
-// An optional property which will be sent the TouchUpInside event
-// when return is pressed while editing the last field in the form.
-// The property returnShouldMoveToNextField must be set to YES in order
-// to use this.
-@property (nonatomic, weak) UIButton *submitButton;
 
 // The margin between the keyboard and the field being edited.
 @property (nonatomic, assign) CGFloat keyboardTopMargin;
