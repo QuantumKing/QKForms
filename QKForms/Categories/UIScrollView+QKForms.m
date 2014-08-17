@@ -397,7 +397,13 @@ static const int kFormPrivateDataKey;
 - (void)QKForms_updateShadow
 {
     QKFormsPrivateData *data = self.QKForms_privateData;
+    QKFormsOptions *options = self.QKForms_formOptions;
 
+    if (!options.showsShadow) {
+        data.shadowView.hidden = YES;
+        return;
+    }
+    
     if (self.contentOffset.y < (self.contentSize.height - CGRectGetHeight(self.bounds) - 10)) {
 
         if (data.shadowView == nil) {

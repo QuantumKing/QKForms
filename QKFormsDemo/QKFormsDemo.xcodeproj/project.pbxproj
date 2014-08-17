@@ -21,15 +21,15 @@
 		259D1C3C199FE78700EA02D3 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 259D1C1E199FE78700EA02D3 /* UIKit.framework */; };
 		259D1C44199FE78700EA02D3 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 259D1C42199FE78700EA02D3 /* InfoPlist.strings */; };
 		259D1C46199FE78700EA02D3 /* QKFormsDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 259D1C45199FE78700EA02D3 /* QKFormsDemoTests.m */; };
-		259D1C59199FE87400EA02D3 /* UITextView+TextHeight.m in Sources */ = {isa = PBXBuildFile; fileRef = 259D1C52199FE87400EA02D3 /* UITextView+TextHeight.m */; };
-		259D1C5A199FE87400EA02D3 /* QKAutoExpandingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 259D1C54199FE87400EA02D3 /* QKAutoExpandingTextView.m */; };
-		259D1C5B199FE87400EA02D3 /* QKFormsScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 259D1C56199FE87400EA02D3 /* QKFormsScrollView.m */; };
-		259D1C5C199FE87400EA02D3 /* QKKeyboardStateListener.m in Sources */ = {isa = PBXBuildFile; fileRef = 259D1C58199FE87400EA02D3 /* QKKeyboardStateListener.m */; };
-		259E2C4619A01087000EDBCB /* UIScrollView+QKForms.m in Sources */ = {isa = PBXBuildFile; fileRef = 259E2C4519A01087000EDBCB /* UIScrollView+QKForms.m */; };
-		259E2C4919A0242F000EDBCB /* QKFormsOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 259E2C4819A0242F000EDBCB /* QKFormsOptions.m */; };
-		259E2C4C19A02CC7000EDBCB /* QKFormsTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 259E2C4B19A02CC7000EDBCB /* QKFormsTableView.m */; };
-		259E2C4F19A03139000EDBCB /* QKFormsCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 259E2C4E19A03139000EDBCB /* QKFormsCollectionView.m */; };
-		259E2C5219A03345000EDBCB /* QKPlaceholderTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 259E2C5119A03345000EDBCB /* QKPlaceholderTextView.m */; };
+		259E2C7D19A035DC000EDBCB /* UIScrollView+QKForms.m in Sources */ = {isa = PBXBuildFile; fileRef = 259E2C6C19A035DB000EDBCB /* UIScrollView+QKForms.m */; };
+		259E2C7E19A035DC000EDBCB /* UITextView+TextHeight.m in Sources */ = {isa = PBXBuildFile; fileRef = 259E2C6E19A035DB000EDBCB /* UITextView+TextHeight.m */; };
+		259E2C7F19A035DC000EDBCB /* QKAutoExpandingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 259E2C7019A035DC000EDBCB /* QKAutoExpandingTextView.m */; };
+		259E2C8019A035DC000EDBCB /* QKFormsCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 259E2C7219A035DC000EDBCB /* QKFormsCollectionView.m */; };
+		259E2C8119A035DC000EDBCB /* QKFormsOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 259E2C7419A035DC000EDBCB /* QKFormsOptions.m */; };
+		259E2C8219A035DC000EDBCB /* QKFormsScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 259E2C7619A035DC000EDBCB /* QKFormsScrollView.m */; };
+		259E2C8319A035DC000EDBCB /* QKFormsTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 259E2C7819A035DC000EDBCB /* QKFormsTableView.m */; };
+		259E2C8419A035DC000EDBCB /* QKKeyboardStateListener.m in Sources */ = {isa = PBXBuildFile; fileRef = 259E2C7A19A035DC000EDBCB /* QKKeyboardStateListener.m */; };
+		259E2C8519A035DC000EDBCB /* QKPlaceholderTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 259E2C7C19A035DC000EDBCB /* QKPlaceholderTextView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,24 +62,24 @@
 		259D1C41199FE78700EA02D3 /* QKFormsDemoTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "QKFormsDemoTests-Info.plist"; sourceTree = "<group>"; };
 		259D1C43199FE78700EA02D3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		259D1C45199FE78700EA02D3 /* QKFormsDemoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QKFormsDemoTests.m; sourceTree = "<group>"; };
-		259D1C51199FE87400EA02D3 /* UITextView+TextHeight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITextView+TextHeight.h"; sourceTree = "<group>"; };
-		259D1C52199FE87400EA02D3 /* UITextView+TextHeight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITextView+TextHeight.m"; sourceTree = "<group>"; };
-		259D1C53199FE87400EA02D3 /* QKAutoExpandingTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QKAutoExpandingTextView.h; path = ../QKAutoExpandingTextView.h; sourceTree = "<group>"; };
-		259D1C54199FE87400EA02D3 /* QKAutoExpandingTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QKAutoExpandingTextView.m; path = ../QKAutoExpandingTextView.m; sourceTree = "<group>"; };
-		259D1C55199FE87400EA02D3 /* QKFormsScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QKFormsScrollView.h; path = ../QKFormsScrollView.h; sourceTree = "<group>"; };
-		259D1C56199FE87400EA02D3 /* QKFormsScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QKFormsScrollView.m; path = ../QKFormsScrollView.m; sourceTree = "<group>"; };
-		259D1C57199FE87400EA02D3 /* QKKeyboardStateListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QKKeyboardStateListener.h; path = ../QKKeyboardStateListener.h; sourceTree = "<group>"; };
-		259D1C58199FE87400EA02D3 /* QKKeyboardStateListener.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QKKeyboardStateListener.m; path = ../QKKeyboardStateListener.m; sourceTree = "<group>"; };
-		259E2C4419A01087000EDBCB /* UIScrollView+QKForms.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+QKForms.h"; sourceTree = "<group>"; };
-		259E2C4519A01087000EDBCB /* UIScrollView+QKForms.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+QKForms.m"; sourceTree = "<group>"; };
-		259E2C4719A0242F000EDBCB /* QKFormsOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QKFormsOptions.h; path = ../QKFormsOptions.h; sourceTree = "<group>"; };
-		259E2C4819A0242F000EDBCB /* QKFormsOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QKFormsOptions.m; path = ../QKFormsOptions.m; sourceTree = "<group>"; };
-		259E2C4A19A02CC7000EDBCB /* QKFormsTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QKFormsTableView.h; sourceTree = "<group>"; };
-		259E2C4B19A02CC7000EDBCB /* QKFormsTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QKFormsTableView.m; sourceTree = "<group>"; };
-		259E2C4D19A03139000EDBCB /* QKFormsCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QKFormsCollectionView.h; path = ../QKFormsCollectionView.h; sourceTree = "<group>"; };
-		259E2C4E19A03139000EDBCB /* QKFormsCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QKFormsCollectionView.m; path = ../QKFormsCollectionView.m; sourceTree = "<group>"; };
-		259E2C5019A03345000EDBCB /* QKPlaceholderTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QKPlaceholderTextView.h; path = ../QKPlaceholderTextView.h; sourceTree = "<group>"; };
-		259E2C5119A03345000EDBCB /* QKPlaceholderTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QKPlaceholderTextView.m; path = ../QKPlaceholderTextView.m; sourceTree = "<group>"; };
+		259E2C6B19A035DB000EDBCB /* UIScrollView+QKForms.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+QKForms.h"; sourceTree = "<group>"; };
+		259E2C6C19A035DB000EDBCB /* UIScrollView+QKForms.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+QKForms.m"; sourceTree = "<group>"; };
+		259E2C6D19A035DB000EDBCB /* UITextView+TextHeight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITextView+TextHeight.h"; sourceTree = "<group>"; };
+		259E2C6E19A035DB000EDBCB /* UITextView+TextHeight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITextView+TextHeight.m"; sourceTree = "<group>"; };
+		259E2C6F19A035DB000EDBCB /* QKAutoExpandingTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QKAutoExpandingTextView.h; sourceTree = "<group>"; };
+		259E2C7019A035DC000EDBCB /* QKAutoExpandingTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QKAutoExpandingTextView.m; sourceTree = "<group>"; };
+		259E2C7119A035DC000EDBCB /* QKFormsCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QKFormsCollectionView.h; sourceTree = "<group>"; };
+		259E2C7219A035DC000EDBCB /* QKFormsCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QKFormsCollectionView.m; sourceTree = "<group>"; };
+		259E2C7319A035DC000EDBCB /* QKFormsOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QKFormsOptions.h; sourceTree = "<group>"; };
+		259E2C7419A035DC000EDBCB /* QKFormsOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QKFormsOptions.m; sourceTree = "<group>"; };
+		259E2C7519A035DC000EDBCB /* QKFormsScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QKFormsScrollView.h; sourceTree = "<group>"; };
+		259E2C7619A035DC000EDBCB /* QKFormsScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QKFormsScrollView.m; sourceTree = "<group>"; };
+		259E2C7719A035DC000EDBCB /* QKFormsTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QKFormsTableView.h; sourceTree = "<group>"; };
+		259E2C7819A035DC000EDBCB /* QKFormsTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QKFormsTableView.m; sourceTree = "<group>"; };
+		259E2C7919A035DC000EDBCB /* QKKeyboardStateListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QKKeyboardStateListener.h; sourceTree = "<group>"; };
+		259E2C7A19A035DC000EDBCB /* QKKeyboardStateListener.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QKKeyboardStateListener.m; sourceTree = "<group>"; };
+		259E2C7B19A035DC000EDBCB /* QKPlaceholderTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QKPlaceholderTextView.h; sourceTree = "<group>"; };
+		259E2C7C19A035DC000EDBCB /* QKPlaceholderTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QKPlaceholderTextView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,7 +109,7 @@
 		259D1C0E199FE78700EA02D3 = {
 			isa = PBXGroup;
 			children = (
-				259D1C4F199FE85A00EA02D3 /* QKForms */,
+				259E2C6919A035DB000EDBCB /* QKForms */,
 				259D1C20199FE78700EA02D3 /* QKFormsDemo */,
 				259D1C3F199FE78700EA02D3 /* QKFormsDemoTests */,
 				259D1C19199FE78700EA02D3 /* Frameworks */,
@@ -180,38 +180,38 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		259D1C4F199FE85A00EA02D3 /* QKForms */ = {
+		259E2C6919A035DB000EDBCB /* QKForms */ = {
 			isa = PBXGroup;
 			children = (
-				259D1C50199FE87400EA02D3 /* Categories */,
-				259E2C5019A03345000EDBCB /* QKPlaceholderTextView.h */,
-				259E2C5119A03345000EDBCB /* QKPlaceholderTextView.m */,
-				259D1C53199FE87400EA02D3 /* QKAutoExpandingTextView.h */,
-				259D1C54199FE87400EA02D3 /* QKAutoExpandingTextView.m */,
-				259D1C55199FE87400EA02D3 /* QKFormsScrollView.h */,
-				259D1C56199FE87400EA02D3 /* QKFormsScrollView.m */,
-				259E2C4A19A02CC7000EDBCB /* QKFormsTableView.h */,
-				259E2C4B19A02CC7000EDBCB /* QKFormsTableView.m */,
-				259E2C4D19A03139000EDBCB /* QKFormsCollectionView.h */,
-				259E2C4E19A03139000EDBCB /* QKFormsCollectionView.m */,
-				259D1C57199FE87400EA02D3 /* QKKeyboardStateListener.h */,
-				259D1C58199FE87400EA02D3 /* QKKeyboardStateListener.m */,
-				259E2C4719A0242F000EDBCB /* QKFormsOptions.h */,
-				259E2C4819A0242F000EDBCB /* QKFormsOptions.m */,
+				259E2C6A19A035DB000EDBCB /* Categories */,
+				259E2C6F19A035DB000EDBCB /* QKAutoExpandingTextView.h */,
+				259E2C7019A035DC000EDBCB /* QKAutoExpandingTextView.m */,
+				259E2C7119A035DC000EDBCB /* QKFormsCollectionView.h */,
+				259E2C7219A035DC000EDBCB /* QKFormsCollectionView.m */,
+				259E2C7319A035DC000EDBCB /* QKFormsOptions.h */,
+				259E2C7419A035DC000EDBCB /* QKFormsOptions.m */,
+				259E2C7519A035DC000EDBCB /* QKFormsScrollView.h */,
+				259E2C7619A035DC000EDBCB /* QKFormsScrollView.m */,
+				259E2C7719A035DC000EDBCB /* QKFormsTableView.h */,
+				259E2C7819A035DC000EDBCB /* QKFormsTableView.m */,
+				259E2C7919A035DC000EDBCB /* QKKeyboardStateListener.h */,
+				259E2C7A19A035DC000EDBCB /* QKKeyboardStateListener.m */,
+				259E2C7B19A035DC000EDBCB /* QKPlaceholderTextView.h */,
+				259E2C7C19A035DC000EDBCB /* QKPlaceholderTextView.m */,
 			);
 			name = QKForms;
+			path = ../QKForms;
 			sourceTree = "<group>";
 		};
-		259D1C50199FE87400EA02D3 /* Categories */ = {
+		259E2C6A19A035DB000EDBCB /* Categories */ = {
 			isa = PBXGroup;
 			children = (
-				259D1C51199FE87400EA02D3 /* UITextView+TextHeight.h */,
-				259D1C52199FE87400EA02D3 /* UITextView+TextHeight.m */,
-				259E2C4419A01087000EDBCB /* UIScrollView+QKForms.h */,
-				259E2C4519A01087000EDBCB /* UIScrollView+QKForms.m */,
+				259E2C6B19A035DB000EDBCB /* UIScrollView+QKForms.h */,
+				259E2C6C19A035DB000EDBCB /* UIScrollView+QKForms.m */,
+				259E2C6D19A035DB000EDBCB /* UITextView+TextHeight.h */,
+				259E2C6E19A035DB000EDBCB /* UITextView+TextHeight.m */,
 			);
-			name = Categories;
-			path = ../Categories;
+			path = Categories;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -312,17 +312,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				259D1C31199FE78700EA02D3 /* ViewController.m in Sources */,
-				259D1C59199FE87400EA02D3 /* UITextView+TextHeight.m in Sources */,
-				259E2C4919A0242F000EDBCB /* QKFormsOptions.m in Sources */,
-				259E2C4F19A03139000EDBCB /* QKFormsCollectionView.m in Sources */,
-				259E2C4C19A02CC7000EDBCB /* QKFormsTableView.m in Sources */,
-				259E2C5219A03345000EDBCB /* QKPlaceholderTextView.m in Sources */,
 				259D1C2B199FE78700EA02D3 /* AppDelegate.m in Sources */,
-				259D1C5B199FE87400EA02D3 /* QKFormsScrollView.m in Sources */,
-				259D1C5A199FE87400EA02D3 /* QKAutoExpandingTextView.m in Sources */,
+				259E2C8119A035DC000EDBCB /* QKFormsOptions.m in Sources */,
+				259E2C8319A035DC000EDBCB /* QKFormsTableView.m in Sources */,
+				259E2C8219A035DC000EDBCB /* QKFormsScrollView.m in Sources */,
+				259E2C8519A035DC000EDBCB /* QKPlaceholderTextView.m in Sources */,
+				259E2C8419A035DC000EDBCB /* QKKeyboardStateListener.m in Sources */,
+				259E2C7E19A035DC000EDBCB /* UITextView+TextHeight.m in Sources */,
 				259D1C27199FE78700EA02D3 /* main.m in Sources */,
-				259D1C5C199FE87400EA02D3 /* QKKeyboardStateListener.m in Sources */,
-				259E2C4619A01087000EDBCB /* UIScrollView+QKForms.m in Sources */,
+				259E2C8019A035DC000EDBCB /* QKFormsCollectionView.m in Sources */,
+				259E2C7D19A035DC000EDBCB /* UIScrollView+QKForms.m in Sources */,
+				259E2C7F19A035DC000EDBCB /* QKAutoExpandingTextView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
