@@ -33,7 +33,7 @@ and the class `QKFormsScrollView` handles moving its text fields and text views 
 
 ##Options
 
-Each of the interfaces for `QKFormsScrollView`, `QKFormsTableView` and `QKFormsCollectionView` comes with the following:
+Each of `QKFormsScrollView`, `QKFormsTableView` and `QKFormsCollectionView` comes with the following interface:
 
 ``` obj-c
 // Options, which can be found in the QKFormsOptions class.
