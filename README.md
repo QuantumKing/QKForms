@@ -18,7 +18,7 @@ If you want a text view which expands and moves out of the way of the keyboard a
 ![](https://raw.githubusercontent.com/QuantumKing/QKForms/master/QKFormsDemo/screenshots/step2.png)
 
 ###Step 3
-Add any number of text fields, searchbars, all inside another view, whatever!!
+Add any number of text fields, searchbars, all inside another view, whatever!
 
 ![](https://raw.githubusercontent.com/QuantumKing/QKForms/master/QKFormsDemo/screenshots/step3.png)
 
