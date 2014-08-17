@@ -41,7 +41,7 @@ Each of `QKFormsScrollView`, `QKFormsTableView` and `QKFormsCollectionView` come
 
 // An optional property which will be sent the TouchUpInside event
 // when return is pressed while editing the last field in the form.
-// The property returnShouldMoveToNextField must be set to YES in order
+// The options property returnShouldMoveToNextField must be set to YES in order
 // to use this.
 @property (nonatomic, weak) IBOutlet UIButton *submitButton;
 
