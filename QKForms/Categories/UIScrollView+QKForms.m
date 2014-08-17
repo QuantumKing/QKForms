@@ -7,9 +7,9 @@
 //
 
 #import "UIScrollView+QKForms.h"
-#import "QKKeyboardStateListener.h"
-#import "QKAutoExpandingTextView.h"
-#import "QKFormsOptions.h"
+#import "../QKKeyboardStateListener.h"
+#import "../QKAutoExpandingTextView.h"
+#import "../QKFormsOptions.h"
 #import <objc/runtime.h>
 
 @interface UIView (QKForms)
