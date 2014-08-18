@@ -3,6 +3,9 @@ QKForms
 
 Automatically handles moving text fields and text views out of the way of the keyboard. Also handles expanding text views to fit their text. Device orientation agnostic.
 
+##QKForms in action!
+![](http://giant.gfycat.com/PowerlessIllustriousJumpingbean.gif)
+
 ##Usage
 
 Here is a step by step guide to using QKForms with interface builder. The demo these steps refer to is included in QKFormsDemo.
