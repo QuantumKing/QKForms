@@ -22,7 +22,7 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" text="This is an auto expanding text view" translatesAutoresizingMaskIntoConstraints="NO" id="xOI-Vf-nyY" customClass="QKAutoExpandingTextView">
-                                        <rect key="frame" x="20" y="56" width="280" height="50"/>
+                                        <rect key="frame" x="20" y="208" width="280" height="50"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <color key="backgroundColor" red="0.0" green="0.41037221280000002" blue="0.85449630799999998" alpha="1" colorSpace="calibratedRGB"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -35,7 +35,7 @@
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                     </textView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0mr-pO-pKs">
-                                        <rect key="frame" x="20" y="114" width="280" height="222"/>
+                                        <rect key="frame" x="20" y="266" width="280" height="222"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <subviews>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Text field 1" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="dxu-6X-kJl">
@@ -90,7 +90,7 @@
                                         </constraints>
                                     </view>
                                     <searchBar contentMode="redraw" placeholder="Search for something..." translatesAutoresizingMaskIntoConstraints="NO" id="d2B-KT-dKa">
-                                        <rect key="frame" x="0.0" y="352" width="320" height="44"/>
+                                        <rect key="frame" x="0.0" y="504" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </searchBar>
@@ -103,7 +103,7 @@
                                     <constraint firstItem="d2B-KT-dKa" firstAttribute="centerX" secondItem="0mr-pO-pKs" secondAttribute="centerX" id="bzG-lT-tJx"/>
                                     <constraint firstItem="d2B-KT-dKa" firstAttribute="leading" secondItem="f2r-He-jmP" secondAttribute="leading" id="bzX-b0-Lsi"/>
                                     <constraint firstItem="0mr-pO-pKs" firstAttribute="top" secondItem="xOI-Vf-nyY" secondAttribute="bottom" constant="8" symbolic="YES" id="dN5-mp-OqM"/>
-                                    <constraint firstItem="xOI-Vf-nyY" firstAttribute="top" secondItem="f2r-He-jmP" secondAttribute="top" constant="56" id="icb-I6-Mg0"/>
+                                    <constraint firstItem="xOI-Vf-nyY" firstAttribute="top" secondItem="f2r-He-jmP" secondAttribute="top" constant="208" id="icb-I6-Mg0"/>
                                     <constraint firstAttribute="trailing" secondItem="xOI-Vf-nyY" secondAttribute="trailing" constant="20" symbolic="YES" id="nkF-lz-5Ln"/>
                                     <constraint firstItem="d2B-KT-dKa" firstAttribute="top" secondItem="0mr-pO-pKs" secondAttribute="bottom" constant="16" id="ouM-1E-gin"/>
                                 </constraints>

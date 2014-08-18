@@ -64,6 +64,8 @@ static const int kFormPrivateDataKey;
     // Start up an instance of the keyboard listener.
     [QKKeyboardStateListener sharedInstance];
     
+    [self QKForms_createShadow];
+    
     NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
     
     [defaultCenter addObserver:self selector:@selector(QKForms_textDidBeginEditing:) name:UITextViewTextDidBeginEditingNotification object:nil];
@@ -416,6 +418,23 @@ static const int kFormPrivateDataKey;
 
 #pragma mark - Overflow shadow
 
+- (void)QKForms_createShadow
+{
+    UIView *shadowView = [[UIView alloc] init];;
+    shadowView.layer.shadowColor = [[UIColor blackColor] CGColor];
+    shadowView.layer.shadowOpacity = 1.0;
+    shadowView.layer.shadowRadius = 8.0;
+    shadowView.layer.shadowPath = [UIBezierPath bezierPathWithRect:shadowView.bounds].CGPath;
+    
+    // TODO: If no superview exists, add one.
+    [self.superview addSubview:shadowView];
+    [self QKForms_setShadowViewConstraints:shadowView];
+    [shadowView layoutIfNeeded];
+    
+    QKFormsPrivateData *data = self.QKForms_privateData;
+    data.shadowView = shadowView;
+}
+
 - (void)QKForms_updateShadow
 {
     QKFormsPrivateData *data = self.QKForms_privateData;
@@ -425,25 +444,9 @@ static const int kFormPrivateDataKey;
         data.shadowView.hidden = YES;
         return;
     }
+    self.superview.clipsToBounds = YES;
     
     if (self.contentOffset.y < (self.contentSize.height - CGRectGetHeight(self.bounds) - 10)) {
-        
-        if (data.shadowView == nil) {
-            self.superview.clipsToBounds = YES;
-            
-            UIView *shadowView = [[UIView alloc] init];;
-            shadowView.layer.shadowColor = [[UIColor blackColor] CGColor];
-            shadowView.layer.shadowOpacity = 1.0;
-            shadowView.layer.shadowRadius = 8.0;
-            shadowView.layer.shadowPath = [UIBezierPath bezierPathWithRect:shadowView.bounds].CGPath;
-            
-            // TODO: If no superview exists, add one.
-            [self.superview addSubview:shadowView];
-            [self QKForms_setShadowViewConstraints:shadowView];
-            [shadowView layoutIfNeeded];
-            data.shadowView = shadowView;
-        }
-        
         data.shadowView.layer.shadowPath = [UIBezierPath bezierPathWithRect:data.shadowView.bounds].CGPath;
         data.shadowView.hidden = NO;
     }
