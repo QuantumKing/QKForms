@@ -134,7 +134,9 @@ NSString *const QKAutoExpandingTextViewDidChangeHeight = @"qk_aetv_change_height
                                         multiplier:0
                                           constant:self.maxHeight];
             
-            _textViewMaxHeightConstraint.priority = UILayoutPriorityDefaultHigh;
+            _textViewHeightConstraint.priority = UILayoutPriorityDefaultHigh;
+            _textViewMaxHeightConstraint.priority = UILayoutPriorityRequired;
+            
             [self addConstraint:_textViewMaxHeightConstraint];
         }
     }
@@ -164,7 +166,7 @@ NSString *const QKAutoExpandingTextViewDidChangeHeight = @"qk_aetv_change_height
                                     multiplier:0
                                       constant:textHeight];
         
-        _textViewHeightConstraint.priority = UILayoutPriorityDefaultLow;
+        _textViewHeightConstraint.priority = self.maxHeight ? UILayoutPriorityDefaultHigh : UILayoutPriorityRequired;
         [self addConstraint:_textViewHeightConstraint];
     }
 }
